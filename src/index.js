@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import usePersistedState from './usePersistedState';
 import createStorage from './createStorage';
+import usePersistedState from './usePersistedState';
 
 const getProvider = () => {
   if (typeof global !== 'undefined' && global.localStorage) {
@@ -29,4 +29,4 @@ const createPersistedState = (key, provider = getProvider()) => {
   return useState;
 };
 
-export default createPersistedState;
+module.exports = { createPersistedState, getProvider, usePersistedState };
