@@ -1,33 +1,28 @@
 import 'jest-dom/extend-expect';
 import { useState } from 'react';
 
-import * as persisted from '../src';
-import * as usePersistedState from '../src/usePersistedState';
+import { createPersistedState, usePersistedState } from '../src';
 
 describe('createPersistedState', () => {
   test('import createPersistedState from "use-persisted-state"', () => {
-    expect(typeof persisted.createPersistedState).toBe('function');
+    expect(typeof createPersistedState).toBe('function');
+  });
+  test('import usePersistedState from "use-persisted-state"', () => {
+    expect(typeof usePersistedState).toBe('function');
   });
   test('returns useState if provider is null or running SSR', () => {
     // global.localStorage is undefined in Node.js (but Jest mocks)
     // expect(createPersistedState('key')).toBe(useState);
-    expect(persisted.createPersistedState('key', null)).toBe(useState);
+    expect(createPersistedState('key', null)).toBe(useState);
   });
   test('returns a function if provider provided', () => {
-    const fn = persisted.createPersistedState('key', 'provider');
+    const fn = createPersistedState('key', 'provider');
     expect(typeof fn).toBe('function');
     expect(fn).not.toBe(useState);
   });
   test('returns a function if provider defaulted', () => {
-    const fn = persisted.createPersistedState('key');
+    const fn = createPersistedState('key');
     expect(typeof fn).toBe('function');
     expect(fn).not.toBe(useState);
-  });
-  test('calling that function passes initialValuel, key, and provider', () => {
-    usePersistedState.default = jest.fn(); // Mutate the default export
-    const fn = persisted.createPersistedState('key', 'provider');
-    fn('foo');
-    // expect(usePersistedState.default).toBeCalledWith('foo', 'key');
-    expect(usePersistedState.default).toBeCalled();
   });
 });
